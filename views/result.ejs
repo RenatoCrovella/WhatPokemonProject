@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include("partials/head.ejs") %>
+
+    <body>
+        <div id="background" >
+            <% if (content) { %>
+                 <h1> <%= content.name %> </h1>   
+                 <p>tem data</p>  
+            <% } else { %>
+                <p>não tem data</p>
+                <% } %>
+        </div>
+        
+
+        <%- include("partials/footer.ejs") %>
+    </body>
+
+</html>

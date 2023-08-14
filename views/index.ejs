@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include("partials/head.ejs") %>
+
+    <body>
+        <div id="background" >
+            <h1>What Pokémon would you be?</h1>
+                <div class="redbg"></div>
+                <div class="blackbelt"></div>
+                <div class="blackcenter">
+                    <div class="form-container">
+                        <form action="/pkmn" method="POST">
+                            <label for="inputName">Whats your name?</label><br>
+                            <input class="form-item" type="text" name="inputName" placeholder="Your first name" ><br>
+                            <label for="inputLocation">Where would be your habitat?</label><br>
+                            <input class="form-item" type="text" name="inputLocation" placeholder="Habitat"><br>
+                            <label for="inputType">What Pokémon type is the best?</label><br>
+                            <input class="form-item" type="text" name="inputType" placeholder="Best Pkmn Type"><br>
+                            <button class="form-item btn btn-danger" type="submit">Go!</button>
+                        </form>
+                    </div>
+                </div>
+                <div class="whitebg"></div>            
+        </div>
+        
+
+        <%- include("partials/footer.ejs") %>
+    </body>
+
+</html>

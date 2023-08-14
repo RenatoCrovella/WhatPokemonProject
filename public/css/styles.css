@@ -1,0 +1,94 @@
+body{
+    display: flex;
+    margin: 0;
+}
+
+h1{
+    position: fixed;
+    top: 2vh;
+    font-family: 'Pokemon Solid', sans-serif;
+    font-size: 3rem;
+    color: yellow;
+    z-index: 3;
+    text-align: center;
+}
+
+#background{
+    display: flex;
+    position: relative;
+    left: 0;
+    top: 0;
+    padding: 0;
+    margin: 0;
+    height: 100vh;
+    width: 100vw;
+    justify-content: center;
+    align-items: center;
+}
+
+.redbg{
+    display: block;
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 40vh;
+    width: 100vw;
+    background-color: red;
+    z-index: 0;
+}
+
+.whitebg{
+    display: block;
+    position: absolute;
+    left: 0;
+    top: 60vh;
+    height: 40vh;
+    width: 100vw;
+    background-color: white;
+    z-index: 0;
+}
+
+.blackbelt{
+    position: absolute;
+    display: block;
+    left: 0;
+    top: 40vh;
+    background-color: black;
+    width: 100vw;
+    height: 20vh;
+    z-index: 1;
+}
+
+.blackcenter{
+    display: flex;
+    background-color: #191919;
+    height: 70vh;
+    width: 70vh;
+    border-radius: 100%;
+    justify-content: center;
+    align-items: center;
+    z-index: 2;
+
+}
+
+.form-container{
+    display: flex;
+    position: absolute;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.form-item{
+    font-family: monospace;
+    margin: 5px;
+}
+
+label{
+    color: bisque;
+    font-family: monospace;
+}
+
+.btn{
+    margin-top: 14px;
+}
