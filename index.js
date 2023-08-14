@@ -4,7 +4,7 @@ import axios from "axios";
 
 import {dirname} from "path";
 import { fileURLToPath } from "url";
-import { Console } from "console";
+import { type } from "os";
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
 const app = express();
@@ -15,16 +15,16 @@ const port = 3000;
 
 let serverHost = 'https://pokeapi.co/api/v2';
 
-var pokemon = {
+let pokemon = {
     name: null,
     id: 0,
     type: null,
 }
 
 // Exemplo de uso
-const typeId = 6; // ID do tipo desejado
-const userInputInitial = "s";
-const pokemonInitial = "s";
+let typeId = 0; // ID do tipo desejado
+let userInputInitial = "";
+let pokemonInitial = "";
 
 var pokemonIndex = 0;
 
@@ -32,85 +32,79 @@ app.get("/", (req, res) => {
     res.render("index.ejs");
 });
 
-// Função para fazer uma requisição à API da PokéAPI
+// Make a request to PokéAPI:
 async function fetchPokemonType(typeId) {
     const response = await fetch(`https://pokeapi.co/api/v2/type/${typeId}/`);
     const data = await response.json();
     return data;
 }
 
-// Função para verificar se a inicial do nome coincide com a inicial inserida pelo usuário
+// Verify if the name's initial matches the user's input initial:
 function checkInitial(pokemonName, initial) {
     return pokemonName.charAt(0).toLowerCase() === initial.toLowerCase();
 }
 
-// Função principal para realizar a busca
-async function searchPokemonByTypeAndInitial(typeId, initial, userInputInitial) {
+// Main function to get the list of suitable Pokémon:
+async function searchPokemonByTypeAndInitial(typeId, pkmnInitial, userInputInitial) {
     try {
       const typeData = await fetchPokemonType(typeId);
-      //console.log(typeData); // Adicione este log para ver a estrutura dos dados retornados
       const pokemonsOfType = typeData.pokemon;
       const filteredPokemons = pokemonsOfType.filter((pokemon) => {
         return checkInitial(pokemon.pokemon.name, userInputInitial) &&
-               pokemon.pokemon.name.charAt(0).toLowerCase() === initial.toLowerCase();
+               pokemon.pokemon.name.charAt(0).toLowerCase() === pkmnInitial.toLowerCase();
       });
-      console.log("filteredPokemons.length: " + filteredPokemons.length);
       return filteredPokemons;
     } catch (error) {
-      console.error('Erro ao buscar informações:', error);
+      console.error('Error searching for suitable Pokémon:', error);
     }
 }
 
+// Fetch a Pokémon and return its data:
 async function returnPokemon(typeId, userInputInitial, pokemonInitial){
     try{ 
         console.log(typeId + " " + userInputInitial + " " + pokemonInitial);
+
         const selectedPkmn = await searchPokemonByTypeAndInitial(typeId, userInputInitial, pokemonInitial)
-        console.log(selectedPkmn);
+
         if (selectedPkmn.length > 0) {
-            console.log('Pokémons encontrados:');
+            console.log('Pokémon found:');
             selectedPkmn.forEach((pokemon) => {
                 console.log(pokemon.pokemon.name);
             })
             pokemonIndex = Math.floor(Math.random() * selectedPkmn.length);
-            console.log(pokemonIndex + " " + selectedPkmn[pokemonIndex].pokemon.url);
             const pokemonUrl = selectedPkmn[pokemonIndex].pokemon.url;
-            console.log(pokemonIndex + " " + pokemonUrl);
-            const xadrao = await fetch(`${pokemonUrl}`);
-            console.log(xadrao);
-            const data = await xadrao.json();
+            const thePokemon = await fetch(`${pokemonUrl}`);
+            const data = await thePokemon.json();
             return data; //selectedPkmn[pokemonIndex].id
         }
     } catch {
-        console.log('Try não funfou');
+        console.log('No Pokémon returned.');
     }
 }
 
 app.post("/pkmn", async (req, res) => {
-    //recebe os resultados do body e os processa na seguinte ordem:
+
+    //Get body results and process them in the following order:
+    //1. Save the input information
+    userInputInitial = req.body.inputName.charAt(0);
+    pokemonInitial = userInputInitial;
+    typeId = req.body.inputType;
 
     try{ 
+        //2. Try to get a Pokémon with the same initial and with the type selected:
         const rePkmn = await returnPokemon(typeId, userInputInitial, pokemonInitial);
-        console.log("Passou pela escolha de pokémon (rePkmn)")
-        console.log(rePkmn + " " + rePkmn.name + " " + rePkmn.id + " " + rePkmn.types);
         pokemon = {
             name: rePkmn.name,
             id: rePkmn.id,
             image: rePkmn.sprites["front_default"],
             type: rePkmn.types.map(type => type.type.name).join(", "),
         };
-        console.log(pokemon + " ou " + pokemon.name);
         res.render("result.ejs", { content: pokemon} );
         
     } catch (error) {
         console.log('Nenhum Pokémon encontrado com os critérios. ' + error);
+        res.render("result", { message: "You would be a Pokémon still yet to be discovered! Try again with a new combination or when the National Dex gets updated."});
     }
-
-        //1- Salva os pkmn com a inicial do nome da pessoa num array
-        //2- Checa se algum desses pokémon tem o tipo selecionado
-        //3- Caso positivo, retorna o PKmn selecionado. Se não, retorna uma mensagem de erro dizendo que a pessoa seria um 
-        //Pokemon ainda não catalogado na Pokedex. 
-
-    //Renderiza a página com a resposta contendo os dados do pkmn sorteado (pkmnData).
 });
 
 app.listen(port, function(req, res){

@@ -1,5 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
+<script>
+    function handleDropdownChange() {
+        var dropdown = document.getElementById("dropdownMenu");
+        var selectedValue = dropdown.options[dropdown.selectedIndex].value;
+    }
+</script>
+
 <%- include("partials/head.ejs") %>
 
     <body>
@@ -12,10 +18,33 @@
                         <form action="/pkmn" method="POST">
                             <label for="inputName">Whats your name?</label><br>
                             <input class="form-item" type="text" name="inputName" placeholder="Your first name" ><br>
-                            <label for="inputLocation">Where would be your habitat?</label><br>
-                            <input class="form-item" type="text" name="inputLocation" placeholder="Habitat"><br>
-                            <label for="inputType">What Pokémon type is the best?</label><br>
-                            <input class="form-item" type="text" name="inputType" placeholder="Best Pkmn Type"><br>
+                            <div class="dropdown">
+                                <label for="inputType">What Pokémon type is the best?</label><br>
+                                <select class="form-select btn btn-secondary dropdown-toggle" type="button" name="inputType" 
+                                data-bs-toggle="dropdown" onchange=handleDropdownChange()>
+                                  <option value="1">Normal</a></li>
+                                  <option value="2">Fighting</a></li>
+                                  <option value="3">Flying</a></li>
+                                  <option value="4">Poison</a></li>
+                                  <option value="5">Ground</a></li>
+                                  <option value="6">Rock</a></li>
+                                  <option value="7">Bug</a></li>
+                                  <option value="8">Ghost</a></li>
+                                  <option value="9">Steel</a></li>
+                                  <option value="10">Fire</a></li>
+                                  <option value="11">Water</a></li>
+                                  <option value="12">Grass</a></li>
+                                  <option value="13">Electric</a></li>
+                                  <option value="14">Psychic</a></li>
+                                  <option value="15">Ice</a></li>
+                                  <option value="16">Dragon</a></li>
+                                  <option value="17">Dark</a></li>
+                                  <option value="18">Fairy</a></li>
+                                  <option value="19">Unknown</a></li>
+                                  <option value="20">Shadow</a></li>
+                                </select>
+                            </div>
+                            <%# <input class="form-item" type="dropdown" name="inputType" placeholder="Best Pkmn Type"><br> %>
                             <button class="form-item btn btn-danger" type="submit">Go!</button>
                         </form>
                     </div>
